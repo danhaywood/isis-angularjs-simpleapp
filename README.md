@@ -24,7 +24,9 @@ To run the example without a requirement for CORS being configured, change to a 
 
       url: '/restful/services/'
       
-Either way, when browse to: http://localhost:8080/angular/app/index.html
+Either way, when browse to: 
+
+    http://localhost:8080/angular/app/index.html
 
 Should see something like:
 
