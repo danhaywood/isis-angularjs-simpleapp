@@ -12,22 +12,13 @@ angular.module('myApp.controllers', [])
 
   .controller('IsisCtrl', ['$scope', '$http', function($scope, $http) {
 
-    $scope.yeomanStuff = function () {
-      return [
-        'yo',
-        'Grunt',
-        'Bower'
-      ];
-    };
-
-
     function ISISwww($scope, $http) {
 
       $http({
 
         method: "GET",
 
-        url: '/restful/services/'
+        url: 'http://halyogatp:8080/restful/services/'
 
       }).
 

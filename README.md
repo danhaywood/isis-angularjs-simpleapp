@@ -14,7 +14,17 @@ Use `npm` to bring down dependencies (they aren't checked into the git repo):
     
 Might need to run this command twice (at least, I did on Windows).
 
-Then browse to: http://localhost:8080/angular/app/index.html
+The example as committed demonstrates CORS support by hard-coding the URL (in `webapp/src/main/webapp/angular/app/controllers.js`:
+
+      url: 'http://halyogatp:8080/restful/services/'
+
+Change hostname as required.
+
+To run the example without a requirement for CORS being configured, change to a relative URL:
+
+      url: '/restful/services/'
+      
+Either way, when browse to: http://localhost:8080/angular/app/index.html
 
 Should see something like:
 
@@ -137,3 +147,51 @@ In `js/controllers.js`:
         ISISwww($scope, $http);
 
       }])
+
+
+### Cross origin support
+
+To demonstrate cross-origin support, changed the URL to load from fully qualified host name:
+      
+      url: 'http://halyogatp:8080/restful/services/'
+      
+where "halyogatp" is my hostname.  Change as required.
+
+Running the app caused the expected cross-origin error to occur:
+
+![](https://raw.github.com/danhaywood/isis-angularjs-simpleapp/master/images/cors-error.png)
+
+Added in filter:
+
+    <filter>
+        <filter-name>cross-origin</filter-name>
+        <filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class>
+        <init-param>
+            <param-name>allowedOrigins</param-name>
+            <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowedMethods</param-name>
+            <param-value>GET,POST,PUT,DELETE</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowedHeaders</param-name>
+            <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>preflightMaxAge</param-name>
+            <param-value>1800</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowCredentials</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>cross-origin</filter-name>
+        <url-pattern>/restful/*</url-pattern>
+    </filter-mapping>
+
+and corresponding class [CrossOriginFilter](https://github.com/danhaywood/isis-angularjs-simpleapp/blob/master/webapp/src/main/java/org/eclipse/jetty/servlets/CrossOriginFilter.java) in `webapp/src/main/java`
+
+And, w00t! once more.
